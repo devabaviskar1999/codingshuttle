@@ -3,24 +3,27 @@ package com.codingshuffle.youtube.LearningRESTAPIs.controller;
 
 import com.codingshuffle.youtube.LearningRESTAPIs.dto.StudentDto;
 import com.codingshuffle.youtube.LearningRESTAPIs.entity.Student;
-import com.codingshuffle.youtube.LearningRESTAPIs.repository.StudentRepository;
+import com.codingshuffle.youtube.LearningRESTAPIs.service.StudentService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 public class StudentController {
-    private final StudentRepository studentRepository;
-
-    public StudentController(StudentRepository studentRepository) {
-        this.studentRepository = studentRepository;
+    public final StudentService studentService;
+    @GetMapping("/students")
+    public List<StudentDto> getStudent(){
+        return studentService.getAllStudents();
     }
- 
-    @GetMapping(path = "/student")
-    public List<Student> getStudent(){
-        System.out.println("database data : " + studentRepository.findAll() );
-        return studentRepository.findAll();
+
+    @GetMapping("/students/{id}")
+    public StudentDto getStudentById(@PathVariable("id") Long studentId){
+        return studentService.getStudentById(studentId);
     }
 
 }
+
